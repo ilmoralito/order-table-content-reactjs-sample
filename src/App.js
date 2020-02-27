@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ToonApp from "./ToonApp";
 import "./App.css";
 
 const movieList = [
@@ -159,6 +160,7 @@ function App() {
             ))}
         </tbody>
       </table>
+      <ToonApp />
     </div>
   );
 }
