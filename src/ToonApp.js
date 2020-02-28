@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const toonList = [
   {
@@ -36,12 +36,32 @@ function ToonApp() {
 
     const clonedToones = [...toons];
 
-    if (value.includes("popular")) {
+    if (value === "more popular") {
+      clonedToones.sort((a, b) => b.views - a.views);
+    }
+
+    if (value === "less popular") {
       clonedToones.sort((a, b) => a.views - b.views);
+    }
+
+    if (value === "more recent") {
+      clonedToones.sort((a, b) => b.publishedDate - a.publishedDate);
+    }
+
+    if (value === "less recent") {
+      clonedToones.sort((a, b) => a.publishedDate - b.publishedDate);
     }
 
     setToons(clonedToones);
   }
+
+  useEffect(() => {
+    const clonedToones = [...toons];
+
+    clonedToones.sort((a, b) => b.views - a.views);
+
+    setToons(clonedToones);
+  }, []);
 
   return (
     <div>
@@ -57,15 +77,26 @@ function ToonApp() {
       </select>
       <ul>
         {toons.map(toon => (
-          <Toon key={toon.id} name={toon.name} />
+          <Toon
+            key={toon.id}
+            name={toon.name}
+            views={toon.views}
+            publishedDate={toon.publishedDate}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Toon({ name }) {
-  return <li>{name}</li>;
+function Toon({ name, views, publishedDate }) {
+  return (
+    <li>
+      <div>Name: {name}</div>
+      <div>Views: {views}</div>
+      <div>Published date: {publishedDate.toLocaleDateString()}</div>
+    </li>
+  );
 }
 
 export default ToonApp;
